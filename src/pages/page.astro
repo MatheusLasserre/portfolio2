@@ -1,21 +1,19 @@
 ---
 import DLink from '../components/DLink.astro'
 import Layout from '../layouts/Layout.astro'
-import { gsapStore } from '../store/store.ts'
 ---
-
 <script>
-  // Init GSAP and Context
-  import { Init } from '../store/utils'
+	// Init GSAP and Context
+	import { Init } from '../store/utils'
   const [gsap, timeline, setTimeLine] = Init()
 
   // Selectors
-  const container = document.querySelector('.container')
+  const container = document.querySelector('.container2')
   let q = gsap.utils.selector(container)
 
   // Entry Animations
   function Entry() {
-    gsap.from('.container', {
+    gsap.from('.container2', {
       duration: 0,
       // ease: 'power2.inOut',
       autoAlpha: 0,
@@ -44,25 +42,26 @@ import { gsapStore } from '../store/store.ts'
   Exit()
 </script>
 <Layout title='Welcome.'>
-  <main>
-    <div class='container'>
-      <h1>Matheus Lasserre</h1>
-      <p>FullStack Developer for over 5 years.</p>
-      <DLink href='/page' label='Pages' />
-    </div>
-  </main>
-</Layout>
-
-<style lang='scss'>
-  .container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    color: white;
-    visibility: hidden;
-  }
-</style>
+	<main>
+	  <div class='container2'>
+		<h1>Matheus Lasserre</h1>
+		<p>FullStack Developer for over 5 years.</p>
+		<DLink href='/' label='Home' />
+	  </div>
+	</main>
+  </Layout>
+  
+  <style lang='scss'>
+	.container2 {
+	  width: 100vw;
+	  height: 100vh;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	  background-color: black;
+	  color: white;
+	  visibility: hidden;
+	}
+  </style>
+  

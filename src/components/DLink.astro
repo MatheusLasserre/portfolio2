@@ -1,0 +1,38 @@
+---
+interface Props {
+  label: string
+  href: string
+  className?: string
+}
+
+const { href, label, className } = Astro.props
+---
+
+<script>
+import { localTimeline } from "../store/store"
+
+	const timeLine = localTimeline.get()
+  function AnimateAndGo(href: string) {
+    console.log(href)
+    timeLine.play().then(() => {
+      console.log(href)
+      window.location.href = href
+	  timeLine.pause().clear()
+    })
+  }
+  const l = document.getElementsByTagName('a')
+  for (let i = 0; i < l.length; i++) {
+	l[i].addEventListener('click', (e) => {
+    e.preventDefault()
+    AnimateAndGo(l[i].dataset.href!)
+	})
+	if(l[i].dataset.class !== undefined) {
+		l[i].classList.add(l[i].dataset.class!)
+	}
+	
+  }
+</script>
+<a href='#' data-href={href} data-class={className}>
+ {label}
+</a>
+<style></style>

@@ -10,8 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^4.15.3",
     "@astrojs/check": "^0.9.3",
+    "astro": "^4.15.3",
+    "gsap": "^3.12.5",
+    "nanostores": "^0.11.3",
+    "sass": "^1.78.0",
     "typescript": "^5.5.4"
   }
 }
