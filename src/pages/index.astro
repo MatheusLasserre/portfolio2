@@ -1,5 +1,6 @@
 ---
 import DLink from '../components/DLink.astro'
+import CircleInOut from '../components/Transitions/CircleInOut.astro'
 import Layout from '../layouts/Layout.astro'
 import { gsapStore } from '../store/store.ts'
 ---
@@ -7,7 +8,7 @@ import { gsapStore } from '../store/store.ts'
 <script>
   // Init GSAP and Context
   import { Init } from '../store/utils'
-  const [gsap, timeline, setTimeLine] = Init()
+  const [gsap, timeline, setTimeLine, pageTimeline, setPageTimeLine] = Init()
 
   // Selectors
   const container = document.querySelector('.container')
@@ -15,11 +16,6 @@ import { gsapStore } from '../store/store.ts'
 
   // Entry Animations
   function Entry() {
-    gsap.from('.container', {
-      duration: 0,
-      // ease: 'power2.inOut',
-      autoAlpha: 0,
-    })
     gsap.from(q('*'), {
       opacity: 0,
       x: 100,
@@ -43,15 +39,17 @@ import { gsapStore } from '../store/store.ts'
   Entry()
   Exit()
 </script>
+<CircleInOut>
 <Layout title='Welcome.'>
-  <main>
-    <div class='container'>
-      <h1>Matheus Lasserre</h1>
-      <p>FullStack Developer for over 5 years.</p>
-      <DLink href='/page' label='Pages' />
-    </div>
-  </main>
-</Layout>
+    <main>
+      <div class='container'>
+        <h1>Matheus Lasserre2</h1>
+        <p>FullStack Developer for over 5 years.</p>
+        <DLink href='/page' label='Pages' />
+      </div>
+    </main>
+  </Layout>
+</CircleInOut>
 
 <style lang='scss'>
   .container {
@@ -63,6 +61,5 @@ import { gsapStore } from '../store/store.ts'
     align-items: center;
     background-color: black;
     color: white;
-    visibility: hidden;
   }
 </style>

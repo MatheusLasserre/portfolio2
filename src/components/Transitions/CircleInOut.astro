@@ -1,0 +1,98 @@
+---
+import { gsapStore } from '../../store/store.ts'
+---
+
+<script>
+  // Init GSAP and Context
+  import { Init } from '../../store/utils'
+  const [gsap, timeline, setTimeLine, pageTimeline, setPageTimeLine] = Init()
+
+  // Selectors
+  // const container = document.querySelector('.container')
+  // let q = gsap.utils.selector(container)
+
+  // Entry Animations
+  function Entry() {
+    gsap.from('.cio-container', {
+      duration: 0.2,
+      autoAlpha: 0,
+    })
+    gsap.fromTo('.circle', {
+      attr: {
+        r: '0vw',
+      },
+      fill: 'none',
+      stroke: '#161616',
+      strokeWidth: '200vw',
+      ease: 'custom2',
+    }, {
+      attr: {
+        r: '200vw',
+      },
+      duration: 2,
+    }).then(() => {
+      gsap.set('.circle', {
+          fill: '#161616',
+          stroke: 'none',
+          strokeWidth: '0vw',
+          attr: {
+            r: '0vw',
+          }
+      })
+    })
+  }
+  // Exit Animations
+  function Exit() {
+    pageTimeline.pause()
+    pageTimeline.add('exit').to('.circle', {
+      duration: 1,
+      ease: 'custom2',
+      attr: {
+        r: '100vw',
+      },
+    }, 'exit'),
+      setPageTimeLine(pageTimeline)
+  }
+  Entry()
+  Exit()
+  document.addEventListener('click', (e) => {
+    // @ts-ignore
+    if(e.target.dataset.dlink) {
+      console.log(e.x, e.y)
+    }
+  })
+</script>
+<div class='cio-container'>
+  <svg class='svg' width='100vw' height='100vh'>
+    <!-- <circle r='0vw' cx='50vw' cy='50vh' fill='black' class='circle'></circle> -->
+    <circle r='200vw' cx='50vw' cy='50vh' fill='none' stroke-width='200vw' class='circle'></circle>
+  </svg>
+  <slot />
+</div>
+
+<style lang='scss'>
+  .cio-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    visibility: hidden;
+  }
+
+  .circle {
+    stroke: gray;
+  }
+
+  .svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
+  }
+</style>

@@ -1,11 +1,13 @@
 ---
 import DLink from '../components/DLink.astro'
+import CircleInOut from '../components/Transitions/CircleInOut.astro'
 import Layout from '../layouts/Layout.astro'
 ---
+
 <script>
-	// Init GSAP and Context
-	import { Init } from '../store/utils'
-  const [gsap, timeline, setTimeLine] = Init()
+  // Init GSAP and Context
+  import { Init } from '../store/utils'
+  const [gsap, timeline, setTimeLine, pageTimeline, setPageTimeLine] = Init()
 
   // Selectors
   const container = document.querySelector('.container2')
@@ -13,11 +15,6 @@ import Layout from '../layouts/Layout.astro'
 
   // Entry Animations
   function Entry() {
-    gsap.from('.container2', {
-      duration: 0,
-      // ease: 'power2.inOut',
-      autoAlpha: 0,
-    })
     gsap.from(q('*'), {
       opacity: 0,
       x: 100,
@@ -41,27 +38,27 @@ import Layout from '../layouts/Layout.astro'
   Entry()
   Exit()
 </script>
+<CircleInOut>
 <Layout title='Welcome.'>
-	<main>
-	  <div class='container2'>
-		<h1>Matheus Lasserre</h1>
-		<p>FullStack Developer for over 5 years.</p>
-		<DLink href='/' label='Home' />
-	  </div>
-	</main>
+    <main>
+      <div class='container2'>
+        <h1>Matheus Lasserre</h1>
+        <p>FullStack Developer for over 5 years.</p>
+        <DLink href='/' label='Home' />
+      </div>
+    </main>
   </Layout>
-  
-  <style lang='scss'>
-	.container2 {
-	  width: 100vw;
-	  height: 100vh;
-	  display: flex;
-	  flex-direction: column;
-	  justify-content: center;
-	  align-items: center;
-	  background-color: black;
-	  color: white;
-	  visibility: hidden;
-	}
-  </style>
-  
+</CircleInOut>
+
+<style lang='scss'>
+  .container2 {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+  }
+</style>

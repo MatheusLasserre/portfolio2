@@ -8,5 +8,6 @@ export default defineConfig({
                 'gsap'
             ]
         }
-    }
+    },
+    prefetch: true
 });
