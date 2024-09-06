@@ -19,9 +19,9 @@ import { gsapStore } from '../../store/store.ts'
     })
     gsap.to('.circle', {
       attr: {
-        r: '200vw',
+        r: '250vw',
       },
-      duration: 1,
+      duration: 0.7,
     }).then(() => {
       const circle = document.querySelector('.circle') as SVGCircleElement
       circle.style.fill = '#161616'
@@ -34,10 +34,10 @@ import { gsapStore } from '../../store/store.ts'
   function Exit() {
     pageTimeline.pause()
     pageTimeline.add('exit').to('.circle', {
-      duration: 1,
+      duration: 0.7,
       ease: 'custom2',
       attr: {
-        r: '100vw',
+        r: '120vw',
       },
     }, 'exit'),
       setPageTimeLine(pageTimeline)
