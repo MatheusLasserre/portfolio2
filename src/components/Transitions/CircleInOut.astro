@@ -14,31 +14,20 @@ import { gsapStore } from '../../store/store.ts'
   // Entry Animations
   function Entry() {
     gsap.from('.cio-container', {
-      duration: 0.2,
+      duration: 0,
       autoAlpha: 0,
     })
-    gsap.fromTo('.circle', {
-      attr: {
-        r: '0vw',
-      },
-      fill: 'none',
-      stroke: '#161616',
-      strokeWidth: '200vw',
-      ease: 'custom2',
-    }, {
+    gsap.to('.circle', {
       attr: {
         r: '200vw',
       },
-      duration: 2,
+      duration: 1,
     }).then(() => {
-      gsap.set('.circle', {
-          fill: '#161616',
-          stroke: 'none',
-          strokeWidth: '0vw',
-          attr: {
-            r: '0vw',
-          }
-      })
+      const circle = document.querySelector('.circle') as SVGCircleElement
+      circle.style.fill = '#161616'
+      circle.style.stroke = 'none'
+      circle.style.strokeWidth = '0vw'
+      circle.setAttribute('r', '0vw')
     })
   }
   // Exit Animations
@@ -65,7 +54,7 @@ import { gsapStore } from '../../store/store.ts'
 <div class='cio-container'>
   <svg class='svg' width='100vw' height='100vh'>
     <!-- <circle r='0vw' cx='50vw' cy='50vh' fill='black' class='circle'></circle> -->
-    <circle r='200vw' cx='50vw' cy='50vh' fill='none' stroke-width='200vw' class='circle'></circle>
+    <circle r='100vw' cx='50vw' cy='50vh' fill='none' stroke-width='200vw' stroke='#161616' class='circle'></circle>
   </svg>
   <slot />
 </div>
@@ -81,10 +70,6 @@ import { gsapStore } from '../../store/store.ts'
     background-color: black;
     color: white;
     visibility: hidden;
-  }
-
-  .circle {
-    stroke: gray;
   }
 
   .svg {
