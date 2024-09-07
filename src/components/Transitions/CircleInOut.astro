@@ -21,7 +21,8 @@ import { gsapStore } from '../../store/store.ts'
       attr: {
         r: '250vw',
       },
-      duration: 0.7,
+      duration: 0.3,
+      ease: 'EaseInCirc',
     }).then(() => {
       const circle = document.querySelector('.circle') as SVGCircleElement
       circle.style.fill = '#161616'
@@ -34,8 +35,8 @@ import { gsapStore } from '../../store/store.ts'
   function Exit() {
     pageTimeline.pause()
     pageTimeline.add('exit').to('.circle', {
-      duration: 0.7,
-      ease: 'custom2',
+      duration: 0.3,
+      ease: 'EaseInCirc',
       attr: {
         r: '120vw',
       },
@@ -77,7 +78,8 @@ import { gsapStore } from '../../store/store.ts'
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
+    z-index: 9999999999999;
+    // z-index: 2;
     pointer-events: none;
   }
 </style>

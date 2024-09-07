@@ -1,0 +1,382 @@
+---
+import ProjectCard from '../ProjectCard.astro'
+---
+
+<script>
+  import { Init } from '../../../store/utils'
+  import { Flip } from 'gsap/Flip'
+  const activeProject: {
+    name: string
+    top: number
+    left: number
+  } = {
+    name: '',
+    top: 0,
+    left: 0,
+  }
+  const [gsap, timeline, setTimeLine, pageTimeline, setPageTimeLine] = Init()
+  const isActive: boolean[] = []
+  function ScanAndOrganize(project?: string) {
+    let nextProject: {
+      name: string
+      top: number
+      left: number
+    } = {
+      name: '',
+      top: 0,
+      left: 0,
+    }
+
+    document.querySelectorAll('[data-project]').forEach((el) => {
+      // @ts-ignore
+      if (typeof el.dataset?.project === 'string' && el.dataset.project === project) {
+        if (activeProject.name !== '') {
+          SlideIn(el)
+        } else {
+          CardEntry(el)
+          ReduceMenu(el)
+        }
+        nextProject = {
+          name: project!,
+          top: el.getBoundingClientRect().top,
+          left: el.getBoundingClientRect().left,
+        }
+        // @ts-ignore
+      } else if (el.dataset.project === activeProject.name) {
+        if (!!project) {
+          SlideOut(el, project)
+        } else {
+          //   Exit(el, activeProject.top, activeProject.left)
+          ExpandMenu()
+        }
+      }
+    })
+    if (nextProject.name !== '') {
+      activeProject.left = nextProject.left
+      activeProject.top = nextProject.top
+      activeProject.name = nextProject.name
+    } else {
+      activeProject.name = ''
+    }
+  }
+  document.addEventListener('click', (e) => {
+    // if(gsap.isAc)
+    if (isActive.length > 0) {
+      return
+    }
+    // @ts-ignore
+    if (e.target.dataset.nextproject) {
+      // @ts-ignore
+      const a = document.querySelectorAll('[data-project]')
+      let nextProjectName = ''
+      a.forEach((el, key) => {
+        // @ts-ignore
+        if (el.dataset.project === e.target.dataset.nextproject) {
+          if (key + 1 < a.length) {
+            // @ts-ignore
+            nextProjectName = a[key + 1].dataset.project
+          } else {
+            // @ts-ignore
+            nextProjectName = a[0].dataset.project
+          }
+        }
+      })
+      ScanAndOrganize(nextProjectName)
+    }
+    // @ts-ignore
+    else if (e.target.dataset.targetproject) {
+      // @ts-ignore
+      ScanAndOrganize(e.target.dataset.targetproject)
+    } else {
+      ScanAndOrganize()
+    }
+  })
+  document.addEventListener('keyup', (e) => {
+    if (isActive.length > 0) {
+      return
+    }
+    if (e.key === 'Escape') {
+      ScanAndOrganize()
+    }
+  })
+  document.addEventListener('DOMContentLoaded', () => {
+    document.body.style.overflow = 'hidden'
+  })
+
+  function CardEntry(el: Element) {
+    isActive.push(true)
+    const { top, left } = el.getBoundingClientRect()
+    gsap.set(el, {
+      ease: 'EaseInSine',
+      top: top,
+      left: left,
+      position: 'absolute',
+      zIndex: 1,
+      border: 'none',
+    })
+    gsap
+      .to(el, {
+        duration: 0.5,
+        ease: 'EaseOutCirc',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+      })
+      .then(() => {
+        gsap.set(el, {
+          zIndex: 1,
+          delay: 0.5,
+        })
+        isActive.pop()
+      })
+  }
+  function SlideIn(el: Element) {
+    isActive.push(true)
+    const animArray = gsap.utils.toArray('[data-project]').filter(
+      (
+        uEl, // @ts-ignore
+      ) => uEl.dataset.project !== activeProject.name && uEl.dataset.project !== el.dataset.project,
+    ) as Element[]
+    let cardsState = Flip.getState(animArray)
+
+    gsap.set(el, {
+      top: 0,
+      left: '100%',
+      position: 'absolute',
+      zIndex: 1,
+      border: 'none',
+      height: '100vh',
+      width: '100vw',
+    })
+    Flip.from(cardsState, {
+      duration: 0.4,
+      ease: 'EaseInSine',
+      absolute: true,
+    })
+    gsap
+      .to(el, {
+        duration: 1,
+        ease: 'EaseOutCustom',
+        top: 0,
+        left: 0,
+      })
+      .then(() => {
+        gsap.set(el, {
+          zIndex: 1,
+          delay: 0.5,
+        })
+        isActive.pop()
+      })
+  }
+  function Exit(el: Element, top: number, left: number) {
+    gsap
+      .to(el, {
+        duration: 0.5,
+        ease: 'EaseOutCirc',
+        top: top,
+        left: left,
+        zIndex: 1,
+        border: '1px solid white',
+        height: '100%',
+        width: 'auto',
+      })
+      .then(() => {
+        gsap.to(el, {
+          top: top,
+          left: left,
+          position: 'static',
+          border: '1px solid white',
+          //   height: '330px',
+          zIndex: 2,
+          duration: 0.5,
+          ease: 'EaseInCirc',
+        })
+      })
+  }
+  function SlideOut(el: Element, project: string) {
+    isActive.push(true)
+    gsap
+      .to(el, {
+        duration: 1,
+        ease: 'EaseOutCustom',
+        left: '-100%',
+        zIndex: 1,
+      })
+      .then(() => {
+        gsap.set(el, {
+          opacity: 0,
+          width: 'auto',
+          height: 'calc(25vh - 40px)',
+          border: '1px solid white',
+          left: '62.5%',
+          top: 'unset',
+          bottom: '-20%',
+        })
+        let animArray = gsap.utils
+          .toArray('[data-project]')
+          // @ts-ignore
+          .filter((uEl) => uEl.dataset.project !== project) as Element[]
+        let cardsState = Flip.getState(animArray)
+
+        gsap.set(animArray, {
+          position: 'static',
+          opacity: 1,
+          zIndex: 2,
+          duration: 0.5,
+          left: '100%',
+        })
+        Flip.from(cardsState, {
+          duration: 0.6,
+          ease: 'EaseOutCustom',
+          absolute: true,
+          //   stagger: 0.03,
+        })
+        isActive.pop()
+      })
+  }
+  function ReduceMenu(el: Element) {
+    isActive.push(true)
+    let animArray = gsap.utils
+      .toArray('[data-project]')
+      // @ts-ignore
+      .filter((uEl) => uEl.dataset.project !== el.dataset.project) as Element[]
+    let cardsState = Flip.getState(animArray)
+
+    gsap.set('.deck-wrapper', {
+      alignItems: 'flex-end',
+      justifyContent: 'flex-end',
+    })
+    gsap.set('.deck-container', {
+      height: '25vh',
+    })
+    gsap.set(animArray, {
+      position: 'static',
+      border: '1px solid white',
+      zIndex: 2,
+      width: 'auto',
+      height: 'calc(25vh - 40px)',
+    })
+    Flip.from(cardsState, {
+      duration: 0.2,
+      ease: 'EaseOutCustom',
+      absolute: true,
+      zIndex: 999,
+      stagger: 0.03,
+    }).then(() => {
+      isActive.pop()
+    })
+  }
+  function ExpandMenu() {
+    isActive.push(true)
+    let animArray = gsap.utils.toArray('[data-project]') as Element[]
+    let cardsState = Flip.getState(animArray)
+
+    gsap.set('.deck-wrapper', {
+      alignItems: 'center',
+      justifyContent: 'center',
+    })
+    gsap.set('.deck-container', {
+      height: '50vh',
+    })
+    gsap.set(animArray, {
+      position: 'static',
+      border: '1px solid white',
+      zIndex: 2,
+      width: 'auto',
+      height: 'calc(50vh - 40px)',
+    })
+
+    Flip.from(cardsState, {
+      duration: 0.4,
+      ease: 'EaseInSine',
+      absolute: true,
+      stagger: 0.03,
+    }).then(() => {
+      isActive.pop()
+    })
+    // gsap.to('.deck-wrapper', {
+    //   duration: 0.5,
+    //   ease: 'EaseInSine',
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    // })
+
+    // gsap.to('.deck-container', {
+    //   duration: 0.5,
+    //   ease: 'EaseInSine',
+    //   height: '35vh',
+    // })
+  }
+  function FirstEntry() {
+    isActive.push(true)
+    gsap
+      .from('[data-project]', {
+        duration: 0.6,
+        opacity: 0,
+        y: 300,
+        x: -150,
+        // rotateX: 180,
+        // transformOrigin: 'bottom',
+        stagger: 0.1,
+        ease: 'EaseOutCirc',
+      })
+      .then(() => {
+        isActive.pop()
+      })
+  }
+  FirstEntry()
+</script>
+
+<div class='deck-wrapper'>
+  <div class='deck-container'>
+    <ProjectCard 
+    title='Goseed' 
+    video='/assets/goseed/goseed.mp4'
+    tech={['GoLang', 'CLI', 'SQL', 'Database']}
+    info={['Seeds 1M in ~3s', 'Supports all MySQL Datatypes', 'Supports composite keys']}
+    desc={[
+            "Goseed is a GoLang based CLI tool that allows you to seed any SQL compatible database with only a few commands.",
+            "It's purpose is to provide a simple and performatic way to seed your database with somerandom data so you can benchmark your application and/or queries.",
+            "Depending on the time you're reading this, maybe i have already implemented the data generators, in which you can run `goseed --setup` to generate a goseed.yaml file and modify each field to be generate accordingly to the selected generator."
+        ]}
+    />
+    <ProjectCard
+    title='ICLS' 
+    video='/assets/icls/icls.mp4'
+    tech={['Nextj.Js', 'MySQL', 'MongoDB', 'React.Js', 'Cloud']}
+    info={['Handles thousands of users.', 'Automatic payment', 'Responsive UI', 'Transactional emails']}
+    desc={[
+            "ICLS is a custom e-learning platform made for the Institute to manage all theirs courses.",
+            "With a custom player provided by the Cloud, it handles slow and fast connections, like any major streaming platform.",
+        ]}
+    />
+    <!-- <ProjectCard title='salon' /> -->
+  </div>
+</div>
+
+<style lang='scss'>
+  .deck-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .deck-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    // border: 1px solid white;
+    overflow: hidden;
+    width: 100vw;
+    height: 50vh;
+    width: calc(100% - 2 / 3 * 100vh);
+    // background-color: white;
+    box-sizing: border-box;
+    padding: 20px;
+    z-index: 2;
+  }
+</style>

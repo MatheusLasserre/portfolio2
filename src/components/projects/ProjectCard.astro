@@ -1,0 +1,221 @@
+---
+type Props = {
+  title: string
+  desc: string[]
+  video: string
+  tech: string[]
+  info: string[]
+}
+const { title, desc, video, tech, info } = Astro.props
+// Title, Desc Array, Video,  Tech Array, Info Array
+---
+
+<script></script>
+<div class='minifyBase minify' data-project={title}>
+  <video src={video} autoplay loop class='blur'></video>
+  <section class='project-card'>
+    <div class='first-row'>
+      <div class='visual-container' data-targetproject={title}>
+        <video
+          src={video}
+          width='100%'
+          class='gif'
+          controls={false}
+          autoplay
+          loop></video>
+      </div>
+      <div class='info-container'>
+        <div class='text-container'>
+          {
+            desc.map((uDesc, key) => {
+              return <p>{uDesc}</p>
+            })
+          }
+        </div>
+        <div class='action-container'>
+          <p data-nextproject={title}>Next</p>
+        </div>
+      </div>
+    </div>
+    <div class='second-row'>
+      <div class='title-container'>
+        <h1 class='title'>{title}</h1>
+        <div class='lists-container'>
+          <ul>
+            {
+              tech.map((uTech) => {
+                return <li>{uTech}</li>
+              })
+            }
+          </ul>
+          <ul>
+            {
+              info.map((uInfo) => {
+                return <li>{uInfo}</li>
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style lang='scss'>
+  .minifyBase {
+    aspect-ratio: unset;
+    overflow: hidden;
+    border: none;
+    z-index: 2;
+  }
+  .minify {
+    // width: 220px;
+    height: 100%;
+    aspect-ratio: 10/16;
+    overflow: hidden;
+    border: 1px solid white;
+    border-radius: 4px;
+  }
+
+  .expand {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    // transform: translate(-50%, -50%);
+  }
+  .blur {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      filter: blur(20px);
+      z-index: 0;
+      object-fit: fill;
+      pointer-events: none;
+    }
+
+  .project-card {
+    width: 100vw;
+    height: 100vh;
+    border: 1px solid gray;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+   
+
+    .first-row {
+      width: 100%;
+      height: 75%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      position: relative;
+      border-bottom: 1px solid white;
+      .visual-container {
+        height: 100%;
+        // border-bottom: 1px solid red;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .gif {
+          position: relative;
+          z-index: 1;
+          pointer-events: none;
+          //   clip-path: fill-box;
+          //   border-radius:1px;
+          object-fit: cover;
+          display: block;
+        }
+      }
+
+      .info-container {
+        width: 100%;
+        min-width: 300px;
+        max-width: calc(100% - 4 / 3 * 100vh);
+        height: 100%;
+        aspect-ratio: 9/16;
+        border-left: 1px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        .text-container {
+          font-size: 16px;
+          padding: 20px;
+
+          p:nth-child(1) {
+            margin-top: 0;
+          }
+        }
+        .action-container {
+          margin-top: auto;
+          width: 100%;
+          height: 10%;
+          min-height: 50px;
+          max-height: 100px;
+          border-top: 1px solid white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          p {
+            background-color: darkblue;
+            width: 100%;
+            height: 100%;
+            text-align: right;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .second-row {
+      min-width: 300px;
+      width: 100%;
+      height: 25%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: calc(2 / 3 * 100vh);
+    }
+
+    .title-container {
+      width: calc(2 / 3 * 100vh);
+      border-right: 1px solid white;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      .title {
+        font-size: 30px;
+        text-transform: uppercase;
+        text-align: center;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .lists-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+      }
+    }
+
+    .cards-container {
+      width: calc(100% - 2 / 3 * 100vh);
+    }
+  }
+</style>
