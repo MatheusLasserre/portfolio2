@@ -91,6 +91,38 @@ import ProjectCard from '../ProjectCard.astro'
       ScanAndOrganize()
     }
   })
+  document.addEventListener('touchend', (e) => {
+    // if(gsap.isAc)
+    if (isActive.length > 0) {
+      return
+    }
+    // @ts-ignore
+    if (e.target.dataset.nextproject) {
+      // @ts-ignore
+      const a = document.querySelectorAll('[data-project]')
+      let nextProjectName = ''
+      a.forEach((el, key) => {
+        // @ts-ignore
+        if (el.dataset.project === e.target.dataset.nextproject) {
+          if (key + 1 < a.length) {
+            // @ts-ignore
+            nextProjectName = a[key + 1].dataset.project
+          } else {
+            // @ts-ignore
+            nextProjectName = a[0].dataset.project
+          }
+        }
+      })
+      ScanAndOrganize(nextProjectName)
+    }
+    // @ts-ignore
+    else if (e.target.dataset.targetproject) {
+      // @ts-ignore
+      ScanAndOrganize(e.target.dataset.targetproject)
+    } else {
+      ScanAndOrganize()
+    }
+  })
   document.addEventListener('keyup', (e) => {
     if (isActive.length > 0) {
       return
@@ -99,6 +131,7 @@ import ProjectCard from '../ProjectCard.astro'
       ScanAndOrganize()
     }
   })
+  document.addEventListener('wheel', () => ScanAndOrganize())
   document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = 'hidden'
   })
@@ -333,6 +366,7 @@ import ProjectCard from '../ProjectCard.astro'
     <ProjectCard 
     title='Goseed' 
     video='/assets/goseed/goseed.mp4'
+    miniDesc='CLI tool'
     tech={['GoLang', 'CLI', 'SQL', 'Database']}
     info={['Seeds 1M in ~3s', 'Supports all MySQL Datatypes', 'Supports composite keys']}
     desc={[
@@ -344,7 +378,8 @@ import ProjectCard from '../ProjectCard.astro'
     <ProjectCard
     title='ICLS' 
     video='/assets/icls/icls.mp4'
-    tech={['Nextj.Js', 'MySQL', 'MongoDB', 'React.Js', 'Cloud']}
+    miniDesc='Custom e-learning platform'
+    tech={['Next.Js', 'MySQL', 'MongoDB', 'React.Js', 'Cloud']}
     info={['Handles thousands of users.', 'Automatic payment', 'Responsive UI', 'Transactional emails']}
     desc={[
             "ICLS is a custom e-learning platform made for the Institute to manage all theirs courses.",

@@ -5,14 +5,20 @@ type Props = {
   video: string
   tech: string[]
   info: string[]
+  miniDesc: string
 }
-const { title, desc, video, tech, info } = Astro.props
+const { title, desc, video, tech, info, miniDesc } = Astro.props
 // Title, Desc Array, Video,  Tech Array, Info Array
 ---
 
 <script></script>
 <div class='minifyBase minify' data-project={title}>
   <video src={video} autoplay loop class='blur'></video>
+  <div class="blurText" data-targetproject={title}>
+    <p data-targetproject={title}>{title}</p>
+    <p data-targetproject={title}>{miniDesc}</p>
+
+  </div>
   <section class='project-card'>
     <div class='first-row'>
       <div class='visual-container' data-targetproject={title}>
@@ -67,7 +73,12 @@ const { title, desc, video, tech, info } = Astro.props
     overflow: hidden;
     border: none;
     z-index: 2;
+    container-type: inline-size;
+    container-name: minifyBase;
+    // background-color: yellow;
   }
+
+
   .minify {
     // width: 220px;
     height: 100%;
@@ -75,15 +86,10 @@ const { title, desc, video, tech, info } = Astro.props
     overflow: hidden;
     border: 1px solid white;
     border-radius: 4px;
-  }
 
-  .expand {
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    // transform: translate(-50%, -50%);
+  }
+  .blurText {
+    display: none;
   }
   .blur {
       position: absolute;
@@ -96,6 +102,77 @@ const { title, desc, video, tech, info } = Astro.props
       object-fit: fill;
       pointer-events: none;
     }
+    @container minifyBase (max-width: 1000px) {
+     .visual-container {
+      cursor: pointer;
+     }
+    .blur {
+      z-index: 55;
+      filter: none;
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      object-position: center top;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.99) 35%, rgba(0, 0, 0, 0.2) 100%);
+    }
+
+    .blurText {
+      display: block;
+      z-index: 56;
+      position: absolute;
+      top: 34%;
+      left: 0;
+      width: 100%;
+      cursor: pointer;
+      & > p:nth-of-type(1) {
+      font-size: 18px;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      margin-bottom: 5px;
+      pointer-events: none;
+      user-select: none;
+      }
+      & > p:nth-of-type(2) {
+      font-size: 8px;
+      text-align: center;
+      // text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      margin-bottom: 10px;
+      margin-top: 0;
+      pointer-events: none;
+      user-select: none;
+      }
+    }
+
+    .blurText2 {
+      display: block;
+      z-index: 56;
+      font-size: 30px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      margin-bottom: 20px;
+    }
+    @media screen and (min-width: 1300px) {
+      .blurText {
+        & > p:nth-of-type(1) {
+        font-size: 24px;
+        }
+        & > p:nth-of-type(2) {
+        font-size: 14px;
+        }
+      }
+    }
+    
+  }
 
   .project-card {
     width: 100vw;
@@ -105,7 +182,6 @@ const { title, desc, video, tech, info } = Astro.props
     overflow: hidden;
     position: relative;
     background: rgba(0, 0, 0, 0.8);
-   
 
     .first-row {
       width: 100%;
@@ -154,6 +230,11 @@ const { title, desc, video, tech, info } = Astro.props
             margin-top: 0;
           }
         }
+        @media screen and (min-width: 1300px) {
+          .text-container {
+            font-size: 20px;
+          }
+        }
         .action-container {
           margin-top: auto;
           width: 100%;
@@ -165,7 +246,7 @@ const { title, desc, video, tech, info } = Astro.props
           align-items: center;
           justify-content: center;
           p {
-            background-color: darkblue;
+            // background-color: darkblue;
             width: 100%;
             height: 100%;
             text-align: right;
@@ -174,7 +255,14 @@ const { title, desc, video, tech, info } = Astro.props
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            font-weight: 600;
+            font-size: 20px;
+            transition: background-color 0.2s ease;
+            &:hover {
+              background-color: rgba(23, 0, 137, 0.598);
+            }
           }
+          
         }
       }
     }
@@ -199,12 +287,15 @@ const { title, desc, video, tech, info } = Astro.props
       padding-bottom: 10px;
       .title {
         font-size: 30px;
-        text-transform: uppercase;
+        // text-transform: uppercase;
         text-align: center;
         margin: 0;
         font-weight: 600;
-      }
+        letter-spacing: -0.08px;
+        
 
+        // font-style: italic;
+      }
       .lists-container {
         width: 100%;
         display: flex;
@@ -212,7 +303,17 @@ const { title, desc, video, tech, info } = Astro.props
         align-items: flex-start;
         justify-content: center;
       }
+      @media screen and (min-width: 1300px) {
+        .title {
+          font-size: 40px;
+        }
+        .lists-container {
+          font-size:20px;
+        }
+      }
+      
     }
+   
 
     .cards-container {
       width: calc(100% - 2 / 3 * 100vh);

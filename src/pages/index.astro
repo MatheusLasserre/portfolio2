@@ -42,18 +42,17 @@ import { gsapStore } from '../store/store.ts'
 <CircleInOut>
 <Layout title='Welcome.'>
     <main>
-      <div class='container'>
-        <h1>Matheus Lasserre2</h1>
+      <div class='index-container'>
+        <h1>Matheus Lasserre</h1>
         <p>FullStack Developer for over 5 years.</p>
-        <DLink href='/page' label='Pages' />
-        <DLink href='/projects' label='Projects' />
+        <DLink href='/projects' label='Start' />
       </div>
     </main>
   </Layout>
 </CircleInOut>
 
 <style lang='scss'>
-  .container {
+  .index-container {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -62,5 +61,14 @@ import { gsapStore } from '../store/store.ts'
     align-items: center;
     background-color: black;
     color: white;
+    margin-top: -160px;
+    h1 {
+      font-size: 42px;
+      margin-bottom: 14px;
+    }
+    p {
+      font-size: 20px;
+      margin-top: 0;
+    }
   }
 </style>

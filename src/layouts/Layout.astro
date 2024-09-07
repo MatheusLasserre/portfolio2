@@ -5,9 +5,9 @@ interface Props {
 
 const { title } = Astro.props
 ---
+
 <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" is:inline></script> -->
-<script>
-</script>
+<script></script>
 <html lang='en'>
   <head>
     <meta charset='UTF-8' />
@@ -26,8 +26,13 @@ const { title } = Astro.props
   :root {
   }
   html {
-    font-family:Inter, system-ui, sans-serif;
+    font-family: Inter, system-ui, sans-serif;
     background: black;
+    font-feature-settings: 'ss04', 'cv03', 'cv04';
+    -webkit-font-smoothing: antialiased;
+    unicode-bidi: isolate;
+    text-wrap: pretty;
+    text-size-adjust: 100%;
   }
   body,
   main {
