@@ -386,6 +386,18 @@ import ProjectCard from '../ProjectCard.astro'
             "With a custom player provided by the Cloud, it handles slow and fast connections, like any major streaming platform.",
         ]}
     />
+    <ProjectCard 
+    title='SecondSeed' 
+    video='/assets/goseed/goseed.mp4'
+    miniDesc='CLI tool'
+    tech={['GoLang', 'CLI', 'SQL', 'Database']}
+    info={['Seeds 1M in ~3s', 'Supports all MySQL Datatypes', 'Supports composite keys']}
+    desc={[
+            "Goseed is a GoLang based CLI tool that allows you to seed any SQL compatible database with only a few commands.",
+            "It's purpose is to provide a simple and performatic way to seed your database with somerandom data so you can benchmark your application and/or queries.",
+            "Depending on the time you're reading this, maybe i have already implemented the data generators, in which you can run `goseed --setup` to generate a goseed.yaml file and modify each field to be generate accordingly to the selected generator."
+        ]}
+    />
     <!-- <ProjectCard title='salon' /> -->
   </div>
 </div>
